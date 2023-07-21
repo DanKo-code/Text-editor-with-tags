@@ -1,0 +1,26 @@
+.note {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  background-color: #d9d9d9;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.note > :first-child > :first-child {
+  margin-bottom: 10px;
+}
+
+.toggle {
+  width: 30px;
+  height: 30px;
+  background-color: white;
+  border-radius: 100%;
+}
+
+.toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

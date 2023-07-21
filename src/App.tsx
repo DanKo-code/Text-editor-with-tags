@@ -1,24 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import AppStyles from "./App.module.css";
+
+import ControlPanel from "./components/ControlPanel/ControlPanel";
+import NodeList from "./components/NotesList/NotesList";
+import TagsList from "./components/TagsList/TagsList";
+import NodeModal from "./components/NoteModal/NoteModal";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div className={AppStyles.NodeModalWrapper}>
+        <NodeModal />
+      </div>
+      <div className={AppStyles.wrapper}>
+        <ControlPanel />
+        <NodeList />
+        <TagsList />
+      </div>
     </div>
   );
 }

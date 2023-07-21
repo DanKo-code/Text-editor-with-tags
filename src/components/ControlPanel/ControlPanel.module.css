@@ -1,0 +1,23 @@
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.control {
+  background-color: #d9d9d9;
+  border-radius: 20px;
+  padding: 5px;
+  width: 150px;
+  height: 30px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.controlsForSelectedItems {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
