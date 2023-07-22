@@ -13,6 +13,11 @@ const NoteModal = () => {
     (state: RootState) => state.NoteModal.selectedNote
   );
 
+  useEffect(() => {
+    setTitle(selectedNote.title);
+    setBody(selectedNote.body);
+  }, [selectedNote]);
+
   const [title, setTitle] = useState<string>(selectedNote?.title);
   const [body, setBody] = useState<string>(selectedNote?.body);
 
