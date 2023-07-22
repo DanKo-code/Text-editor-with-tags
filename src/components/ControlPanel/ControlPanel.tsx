@@ -1,12 +1,24 @@
 import ControlPanelStyles from "./ControlPanel.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../state/store";
-import { visibilityMode } from "../../state/storeSlice/NoteModalSlice";
+import {
+  visibilityMode,
+  changeSelectedNote,
+} from "../../state/storeSlice/NoteModalSlice";
 
 const ControlPanel: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const handlevisibilityMode = () => {
+    dispatch(
+      changeSelectedNote({
+        id: 0,
+        title: "",
+        body: "",
+        createTime: "",
+        selectedState: false,
+      })
+    );
     dispatch(visibilityMode(true));
   };
 
