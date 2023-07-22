@@ -6,10 +6,20 @@ import NodeList from "./components/NotesList/NotesList";
 import TagsList from "./components/TagsList/TagsList";
 import NodeModal from "./components/NoteModal/NoteModal";
 
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "./state/store";
+
 function App() {
+  const isVisible = useSelector(
+    (state: RootState) => state.NoteModal.visibility
+  );
+
   return (
     <div>
-      <div className={AppStyles.NodeModalWrapper}>
+      <div
+        style={{ display: isVisible ? "block" : "none" }}
+        className={AppStyles.NodeModalWrapper}
+      >
         <NodeModal />
       </div>
       <div className={AppStyles.wrapper}>
