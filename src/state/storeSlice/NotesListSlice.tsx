@@ -46,14 +46,7 @@ const NotesListSlice = createSlice({
       });
     },
 
-    //
     removeSelected: (state: INotesListState) => {
-      // state.notes.forEach((note, index, notes) => {
-      //   if (note.selectedState === true) {
-      //     notes.splice(index, 1);
-      //   }
-      // });
-
       state.notes = state.notes.filter((item) => !item.selectedState);
     },
   },

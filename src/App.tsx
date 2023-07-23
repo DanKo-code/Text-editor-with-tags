@@ -16,6 +16,7 @@ function App() {
 
   return (
     <div>
+      {isVisible && <div className={AppStyles.NodeModalOverlay} />}
       <div
         style={{ display: isVisible ? "block" : "none" }}
         className={AppStyles.NodeModalWrapper}
