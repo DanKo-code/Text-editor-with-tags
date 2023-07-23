@@ -39,9 +39,17 @@ const NotesListSlice = createSlice({
         alert("NotesListSlice: Object not found");
       }
     },
+
+    deselectAll: (state: INotesListState) => {
+      alert("NoteListSlice: Enter deselectAll");
+      state.notes.forEach((note) => {
+        note.selectedState = false;
+      });
+    },
   },
 });
 
-export const { addNewNote, changeSelectedState } = NotesListSlice.actions;
+export const { addNewNote, changeSelectedState, deselectAll } =
+  NotesListSlice.actions;
 
 export default NotesListSlice.reducer;

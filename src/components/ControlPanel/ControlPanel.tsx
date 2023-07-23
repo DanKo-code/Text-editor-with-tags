@@ -5,6 +5,7 @@ import {
   visibilityMode,
   changeSelectedNote,
 } from "../../state/storeSlice/NoteModalSlice";
+import { deselectAll } from "../../state/storeSlice/NotesListSlice";
 
 const ControlPanel: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -32,7 +33,12 @@ const ControlPanel: React.FC = () => {
       </div>
       <div className={ControlPanelStyles.controlsForSelectedItems}>
         <div className={ControlPanelStyles.control}>Remove selected</div>
-        <div className={ControlPanelStyles.control}>Deselect</div>
+        <div
+          onClick={() => dispatch(deselectAll())}
+          className={ControlPanelStyles.control}
+        >
+          Deselect All
+        </div>
       </div>
     </div>
   );
