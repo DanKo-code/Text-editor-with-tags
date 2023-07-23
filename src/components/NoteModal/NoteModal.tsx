@@ -7,6 +7,7 @@ import { RootState, AppDispatch } from "../../state/store";
 import {
   visibilityMode,
   fromNewFromExistingMode,
+  changeSelectedNote,
 } from "../../state/storeSlice/NoteModalSlice";
 import {
   addNewNote,
@@ -38,12 +39,12 @@ const NoteModal = () => {
   const [tags, setTags] = useState<ITag[] | undefined>(selectedNote?.tags);
 
   const findTags = (value: string): ITag[] | undefined => {
-    const regex = /#[^ ]+/g;
+    const regex = /#[^ .,!?;:]+/g;
     const matches = value.match(regex);
     let hashtagsArray: string[];
     if (matches != null) {
       hashtagsArray = Array.from(
-        new Set(matches.map((match) => match.slice(1)))
+        new Set(matches.map((match) => match.slice(1).toLowerCase()))
       );
 
       const TypedhashtagsArray: ITag[] = hashtagsArray.map((tag) => {
@@ -73,6 +74,15 @@ const NoteModal = () => {
     await dispatch(visibilityMode(false));
     await dispatch(
       fromNewFromExistingMode({ fromNew: false, fromExisting: false })
+    );
+    await dispatch(
+      changeSelectedNote({
+        id: 0,
+        title: "",
+        body: "",
+        createTime: "",
+        selectedState: false,
+      })
     );
   };
 
@@ -157,7 +167,11 @@ const NoteModal = () => {
         <div>Tags:</div>
         <div className={NoteModalStyles.tagsListWrapper}>
           {tags?.map((item) => {
-            return <Tag key={item.id} tag={item} />;
+            return (
+              <div>
+                <Tag key={item.id} tag={item} />
+              </div>
+            );
           })}
         </div>
       </div>
