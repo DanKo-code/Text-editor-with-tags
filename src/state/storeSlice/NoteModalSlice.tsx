@@ -32,7 +32,6 @@ const NoteModalSlice = createSlice({
       state: INoteModalState,
       action: PayloadAction<typeof initialState.selectedNote>
     ) => {
-      alert(JSON.stringify(action.payload));
       state.selectedNote = action.payload;
     },
   },

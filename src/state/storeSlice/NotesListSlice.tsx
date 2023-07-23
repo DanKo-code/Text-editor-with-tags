@@ -24,9 +24,24 @@ const NotesListSlice = createSlice({
     addNewNote: (state: INotesListState, action: PayloadAction<INote>) => {
       state.notes.push(action.payload);
     },
+
+    changeSelectedState: (
+      state: INotesListState,
+      action: PayloadAction<INote>
+    ) => {
+      let foundNote: INote | undefined = state.notes.find(
+        (item) => item.id === action.payload.id
+      );
+
+      if (foundNote !== undefined) {
+        foundNote.selectedState = !foundNote.selectedState;
+      } else {
+        alert("NotesListSlice: Object not found");
+      }
+    },
   },
 });
 
-export const { addNewNote } = NotesListSlice.actions;
+export const { addNewNote, changeSelectedState } = NotesListSlice.actions;
 
 export default NotesListSlice.reducer;
