@@ -29,10 +29,11 @@ const NotesListSlice = createSlice({
       state: INotesListState,
       action: PayloadAction<{ previousNote: INote; newNote: INote }>
     ) => {
-      state.notes.find((note) => {
-        if (note.id === action.payload.previousNote.id)
-          note = action.payload.newNote;
-      });
+      state.notes = state.notes.map((note) =>
+        note.id === action.payload.previousNote.id
+          ? action.payload.newNote
+          : note
+      );
     },
 
     changeSelectedState: (

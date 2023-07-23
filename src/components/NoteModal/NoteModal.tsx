@@ -13,6 +13,7 @@ import {
   updateExistingNote,
 } from "../../state/storeSlice/NotesListSlice";
 import { INote } from "../NotesList/NotesInfo";
+import { json } from "stream/consumers";
 
 const NoteModal = () => {
   const selectedNote = useSelector(
@@ -74,9 +75,14 @@ const NoteModal = () => {
       };
 
       await dispatch(addNewNote(newNote));
-      await dispatch(
-        fromNewFromExistingMode({ fromNew: false, fromExisting: true })
-      );
+
+      //TODO in the feature mabe add ability to update after create
+      // await dispatch(
+      //   fromNewFromExistingMode({ fromNew: false, fromExisting: true })
+      // );
+
+      //temp solution
+      handlevisibilityMode();
     }
     //for update
     else if (fromNew === false && fromExisting === true) {
