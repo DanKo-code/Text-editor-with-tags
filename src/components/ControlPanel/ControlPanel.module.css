@@ -21,3 +21,7 @@
   flex-direction: row;
   gap: 20px;
 }
+
+.controlsForSelectedItemsHide {
+  display: none;
+}

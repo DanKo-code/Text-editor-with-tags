@@ -14,7 +14,6 @@ const NotesList = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleSelect = (note: INote) => {
-    debugger;
     dispatch(changeSelectedNote(note));
     dispatch(visibilityMode(true));
   };

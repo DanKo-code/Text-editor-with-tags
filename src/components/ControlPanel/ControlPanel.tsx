@@ -5,9 +5,17 @@ import {
   visibilityMode,
   changeSelectedNote,
 } from "../../state/storeSlice/NoteModalSlice";
-import { deselectAll } from "../../state/storeSlice/NotesListSlice";
+import {
+  deselectAll,
+  removeSelected,
+} from "../../state/storeSlice/NotesListSlice";
+//delete then, for use bool visibility for control buttons
+import { contolButtonsVisibilityMode } from "../../state/storeSlice/ControlPanelSlice";
 
 const ControlPanel: React.FC = () => {
+  const contolButtonsVisibility = useSelector(
+    (state: RootState) => state.ControlPanel.contolButtonsVisibility
+  );
   const dispatch = useDispatch<AppDispatch>();
 
   const handlevisibilityMode = () => {
@@ -23,6 +31,10 @@ const ControlPanel: React.FC = () => {
     dispatch(visibilityMode(true));
   };
 
+  const controlsForSelectedItemsWrapperStyles: string = contolButtonsVisibility
+    ? ControlPanelStyles.controlsForSelectedItems
+    : ControlPanelStyles.controlsForSelectedItemsHide;
+
   return (
     <div className={ControlPanelStyles.wrapper}>
       <div
@@ -31,10 +43,21 @@ const ControlPanel: React.FC = () => {
       >
         Create
       </div>
-      <div className={ControlPanelStyles.controlsForSelectedItems}>
-        <div className={ControlPanelStyles.control}>Remove selected</div>
+      <div className={controlsForSelectedItemsWrapperStyles}>
         <div
-          onClick={() => dispatch(deselectAll())}
+          onClick={() => {
+            dispatch(removeSelected());
+            dispatch(contolButtonsVisibilityMode(false));
+          }}
+          className={ControlPanelStyles.control}
+        >
+          Remove selected
+        </div>
+        <div
+          onClick={() => {
+            dispatch(deselectAll());
+            dispatch(contolButtonsVisibilityMode(false));
+          }}
           className={ControlPanelStyles.control}
         >
           Deselect All

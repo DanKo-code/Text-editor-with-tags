@@ -41,15 +41,22 @@ const NotesListSlice = createSlice({
     },
 
     deselectAll: (state: INotesListState) => {
-      alert("NoteListSlice: Enter deselectAll");
       state.notes.forEach((note) => {
         note.selectedState = false;
+      });
+    },
+
+    removeSelected: (state: INotesListState) => {
+      state.notes.forEach((note, index, notes) => {
+        if (note.selectedState === true) {
+          notes.splice(index, 1);
+        }
       });
     },
   },
 });
 
-export const { addNewNote, changeSelectedState, deselectAll } =
+export const { addNewNote, changeSelectedState, deselectAll, removeSelected } =
   NotesListSlice.actions;
 
 export default NotesListSlice.reducer;
