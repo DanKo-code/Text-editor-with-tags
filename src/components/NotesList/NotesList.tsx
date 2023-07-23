@@ -4,7 +4,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../state/store";
 import { changeSelectedNote } from "../../state/storeSlice/NoteModalSlice";
 import { INote } from "./NotesInfo";
-import { visibilityMode } from "../../state/storeSlice/NoteModalSlice";
+import {
+  visibilityMode,
+  fromNewFromExistingMode,
+} from "../../state/storeSlice/NoteModalSlice";
 import { clickOptions } from "@testing-library/user-event/dist/click";
 import React, { MouseEventHandler } from "react";
 
@@ -13,9 +16,10 @@ const NotesList = () => {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleSelect = (note: INote) => {
-    dispatch(changeSelectedNote(note));
-    dispatch(visibilityMode(true));
+  const handleSelect = async (note: INote) => {
+    await dispatch(changeSelectedNote(note));
+    await dispatch(visibilityMode(true));
+    dispatch(fromNewFromExistingMode({ fromNew: false, fromExisting: true }));
   };
 
   return (

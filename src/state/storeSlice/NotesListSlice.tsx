@@ -25,6 +25,16 @@ const NotesListSlice = createSlice({
       state.notes.push(action.payload);
     },
 
+    updateExistingNote: (
+      state: INotesListState,
+      action: PayloadAction<{ previousNote: INote; newNote: INote }>
+    ) => {
+      state.notes.find((note) => {
+        if (note.id === action.payload.previousNote.id)
+          note = action.payload.newNote;
+      });
+    },
+
     changeSelectedState: (
       state: INotesListState,
       action: PayloadAction<INote>
@@ -52,7 +62,12 @@ const NotesListSlice = createSlice({
   },
 });
 
-export const { addNewNote, changeSelectedState, deselectAll, removeSelected } =
-  NotesListSlice.actions;
+export const {
+  addNewNote,
+  changeSelectedState,
+  deselectAll,
+  removeSelected,
+  updateExistingNote,
+} = NotesListSlice.actions;
 
 export default NotesListSlice.reducer;

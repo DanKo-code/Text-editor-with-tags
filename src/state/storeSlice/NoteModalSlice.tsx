@@ -4,6 +4,9 @@ import { INote } from "../../components/NotesList/NotesInfo";
 interface INoteModalState {
   visibility: boolean;
   selectedNote: INote;
+
+  fromNew: boolean;
+  fromExisting: boolean;
 }
 
 const initialState: INoteModalState = {
@@ -15,6 +18,8 @@ const initialState: INoteModalState = {
     createTime: "",
     selectedState: false,
   },
+  fromNew: false,
+  fromExisting: false,
 };
 
 const NoteModalSlice = createSlice({
@@ -34,9 +39,18 @@ const NoteModalSlice = createSlice({
     ) => {
       state.selectedNote = action.payload;
     },
+
+    fromNewFromExistingMode: (
+      state: INoteModalState,
+      action: PayloadAction<{ fromNew: boolean; fromExisting: boolean }>
+    ) => {
+      state.fromNew = action.payload.fromNew;
+      state.fromExisting = action.payload.fromExisting;
+    },
   },
 });
 
-export const { visibilityMode, changeSelectedNote } = NoteModalSlice.actions;
+export const { visibilityMode, changeSelectedNote, fromNewFromExistingMode } =
+  NoteModalSlice.actions;
 
 export default NoteModalSlice.reducer;

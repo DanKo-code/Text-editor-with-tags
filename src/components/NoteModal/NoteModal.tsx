@@ -4,13 +4,24 @@ import tags from "../TagsList/TagsInfo";
 import Tag from "../TagsList/Tag/Tag";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../state/store";
-import { visibilityMode } from "../../state/storeSlice/NoteModalSlice";
-import { addNewNote } from "../../state/storeSlice/NotesListSlice";
+import {
+  visibilityMode,
+  fromNewFromExistingMode,
+} from "../../state/storeSlice/NoteModalSlice";
+import {
+  addNewNote,
+  updateExistingNote,
+} from "../../state/storeSlice/NotesListSlice";
 import { INote } from "../NotesList/NotesInfo";
 
 const NoteModal = () => {
   const selectedNote = useSelector(
     (state: RootState) => state.NoteModal.selectedNote
+  );
+
+  const fromNew = useSelector((state: RootState) => state.NoteModal.fromNew);
+  const fromExisting = useSelector(
+    (state: RootState) => state.NoteModal.fromExisting
   );
 
   useEffect(() => {
@@ -35,8 +46,11 @@ const NoteModal = () => {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const handlevisibilityMode = () => {
-    dispatch(visibilityMode(false));
+  const handlevisibilityMode = async () => {
+    await dispatch(visibilityMode(false));
+    await dispatch(
+      fromNewFromExistingMode({ fromNew: false, fromExisting: false })
+    );
   };
 
   const options: Intl.DateTimeFormatOptions = {
@@ -48,16 +62,37 @@ const NoteModal = () => {
     minute: "2-digit",
     second: "2-digit",
   };
-  const handleSave = () => {
-    const newNote: INote = {
-      id: Math.random(),
-      title: title,
-      body: body,
-      createTime: new Date().toLocaleString("en-US", options),
-      selectedState: false,
-    };
+  const handleSave = async () => {
+    //for Create
+    if (fromNew === true && fromExisting === false) {
+      const newNote: INote = {
+        id: Math.random(),
+        title: title,
+        body: body,
+        createTime: new Date().toLocaleString("en-US", options),
+        selectedState: false,
+      };
 
-    dispatch(addNewNote(newNote));
+      await dispatch(addNewNote(newNote));
+      await dispatch(
+        fromNewFromExistingMode({ fromNew: false, fromExisting: true })
+      );
+    }
+    //for update
+    else if (fromNew === false && fromExisting === true) {
+      dispatch(
+        updateExistingNote({
+          previousNote: selectedNote,
+          newNote: {
+            id: Math.random(),
+            title: title,
+            body: body,
+            createTime: new Date().toLocaleString("en-US", options),
+            selectedState: selectedNote.selectedState,
+          },
+        })
+      );
+    }
   };
 
   return (
@@ -71,6 +106,7 @@ const NoteModal = () => {
             value={title}
             onChange={handleState}
           />
+          {/* TODO Problems!!! */}
           <div onClick={handleSave} className={NoteModalStyles.save}></div>
           <div
             onClick={handlevisibilityMode}

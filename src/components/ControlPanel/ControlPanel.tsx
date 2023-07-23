@@ -4,6 +4,7 @@ import { RootState, AppDispatch } from "../../state/store";
 import {
   visibilityMode,
   changeSelectedNote,
+  fromNewFromExistingMode,
 } from "../../state/storeSlice/NoteModalSlice";
 import {
   deselectAll,
@@ -18,8 +19,8 @@ const ControlPanel: React.FC = () => {
   );
   const dispatch = useDispatch<AppDispatch>();
 
-  const handlevisibilityMode = () => {
-    dispatch(
+  const handlevisibilityMode = async () => {
+    await dispatch(
       changeSelectedNote({
         id: 0,
         title: "",
@@ -28,7 +29,10 @@ const ControlPanel: React.FC = () => {
         selectedState: false,
       })
     );
-    dispatch(visibilityMode(true));
+    await dispatch(visibilityMode(true));
+    await dispatch(
+      fromNewFromExistingMode({ fromNew: true, fromExisting: false })
+    );
   };
 
   const controlsForSelectedItemsWrapperStyles: string = contolButtonsVisibility
