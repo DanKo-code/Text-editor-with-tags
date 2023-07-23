@@ -14,6 +14,8 @@ import {
 } from "../../state/storeSlice/NotesListSlice";
 import { INote } from "../NotesList/NotesInfo";
 import { json } from "stream/consumers";
+import { match } from "assert";
+import { ITag } from "../TagsList/TagsInfo";
 
 const NoteModal = () => {
   const selectedNote = useSelector(
@@ -28,20 +30,40 @@ const NoteModal = () => {
   useEffect(() => {
     setTitle(selectedNote.title);
     setBody(selectedNote.body);
+    setTags(selectedNote.tags);
   }, [selectedNote]);
 
   const [title, setTitle] = useState<string>(selectedNote?.title);
   const [body, setBody] = useState<string>(selectedNote?.body);
+  const [tags, setTags] = useState<ITag[] | undefined>(selectedNote?.tags);
+
+  const findTags = (value: string): ITag[] | undefined => {
+    const regex = /#[^ ]+/g;
+    const matches = value.match(regex);
+    let hashtagsArray: string[];
+    if (matches != null) {
+      hashtagsArray = Array.from(
+        new Set(matches.map((match) => match.slice(1)))
+      );
+
+      const TypedhashtagsArray: ITag[] = hashtagsArray.map((tag) => {
+        return { id: Math.random(), title: tag };
+      });
+
+      return TypedhashtagsArray;
+    } else return undefined;
+  };
 
   const handleState = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    debugger;
     const { name, value } = event.target;
     if (name === "title") {
       setTitle(value);
     } else if (name === "body") {
       setBody(value);
+      const res = findTags(value);
+      setTags(res);
     }
   };
 
@@ -72,6 +94,7 @@ const NoteModal = () => {
         body: body,
         createTime: new Date().toLocaleString("en-US", options),
         selectedState: false,
+        tags: tags,
       };
 
       await dispatch(addNewNote(newNote));
@@ -95,6 +118,7 @@ const NoteModal = () => {
             body: body,
             createTime: new Date().toLocaleString("en-US", options),
             selectedState: selectedNote.selectedState,
+            tags: tags,
           },
         })
       );
@@ -132,7 +156,7 @@ const NoteModal = () => {
       <div className={NoteModalStyles.tagsWrapper}>
         <div>Tags:</div>
         <div className={NoteModalStyles.tagsListWrapper}>
-          {tags.map((item) => {
+          {tags?.map((item) => {
             return <Tag key={item.id} tag={item} />;
           })}
         </div>
