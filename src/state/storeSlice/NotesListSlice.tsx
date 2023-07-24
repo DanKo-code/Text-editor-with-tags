@@ -24,17 +24,31 @@ let initialNotes: INote[];
 
 request.onsuccess = function () {
   db = request.result;
-  // Assign the object store to the variable for later use
-  notesDbStore = db.transaction("notes", "readwrite").objectStore("notes");
+  // // Assign the object store to the variable for later use
+  // notesDbStore = db.transaction("notes", "readwrite").objectStore("notes");
 
-  getAllRequest = notesDbStore.getAll();
+  // getAllRequest = notesDbStore.getAll();
 
-  getAllRequest.onsuccess = function (event) {
-    initialNotes = getAllRequest.result;
-  };
+  // getAllRequest.onsuccess = function (event) {
+  //   initialNotes = getAllRequest.result;
+  // };
 };
 
 //DB//////////////////////////////////////////////////////////////////////
+
+let dbd = await function (): INote[] {
+  return [
+    {
+      id: Math.random(),
+      title: "nikita",
+      body: "dfdf",
+      createTime: "24.07",
+      selectedState: false,
+    },
+  ];
+};
+
+const initNotes = dbd();
 
 interface INotesListState {
   notes: INote[];
@@ -43,8 +57,8 @@ interface INotesListState {
 }
 
 const initialState: INotesListState = {
-  notes: [],
-  filteredNotes: [],
+  notes: initNotes,
+  filteredNotes: initNotes,
   filterTitle: "",
 };
 
