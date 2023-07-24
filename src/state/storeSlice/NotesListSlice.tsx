@@ -1,6 +1,7 @@
 import { createAsyncThunk, PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { INote } from "../../components/NotesList/NotesInfo";
 import { ITag } from "../../components/TagsList/TagsInfo";
+import { getAllNotesFromIndexedDB } from "./InitNotes";
 
 //DB//////////////////////////////////////////////////////////////////////
 const indexedDB = window.indexedDB;
@@ -18,37 +19,12 @@ request.onupgradeneeded = function () {
 };
 
 let db: IDBDatabase;
-let notesDbStore: IDBObjectStore;
-let getAllRequest: IDBRequest<INote[]>;
-let initialNotes: INote[];
 
 request.onsuccess = function () {
   db = request.result;
-  // // Assign the object store to the variable for later use
-  // notesDbStore = db.transaction("notes", "readwrite").objectStore("notes");
-
-  // getAllRequest = notesDbStore.getAll();
-
-  // getAllRequest.onsuccess = function (event) {
-  //   initialNotes = getAllRequest.result;
-  // };
 };
 
 //DB//////////////////////////////////////////////////////////////////////
-
-let dbd = await function (): INote[] {
-  return [
-    {
-      id: Math.random(),
-      title: "nikita",
-      body: "dfdf",
-      createTime: "24.07",
-      selectedState: false,
-    },
-  ];
-};
-
-const initNotes = dbd();
 
 interface INotesListState {
   notes: INote[];
@@ -57,8 +33,8 @@ interface INotesListState {
 }
 
 const initialState: INotesListState = {
-  notes: initNotes,
-  filteredNotes: initNotes,
+  notes: await getAllNotesFromIndexedDB(),
+  filteredNotes: await getAllNotesFromIndexedDB(),
   filterTitle: "",
 };
 
