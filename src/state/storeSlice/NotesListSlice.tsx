@@ -49,24 +49,19 @@ const NotesListSlice = createSlice({
       //sad
       state.filteredNotes = state.notes;
 
-      // Check if the indexedDB is available
       if (!db) {
         alert("Error: indexedDB not available");
         return;
       }
 
       try {
-        // Create a new transaction for adding the new note
         const tx = db.transaction("notes", "readwrite");
         const notesDbStore = tx.objectStore("notes");
 
-        // Perform the transaction to add the new note
         notesDbStore.add(action.payload);
 
-        // Note added successfully to indexedDB
         alert("New note added to indexedDB");
       } catch (error) {
-        // Error occurred while adding the note to indexedDB
         alert("Error adding new note to indexedDB: " + error);
       }
     },
@@ -84,6 +79,23 @@ const NotesListSlice = createSlice({
 
       //sad
       state.filteredNotes = state.notes;
+
+      if (!db) {
+        alert("Error: indexedDB not available");
+        return;
+      }
+
+      try {
+        const tx = db.transaction("notes", "readwrite");
+        const notesDbStore = tx.objectStore("notes");
+
+        notesDbStore.delete(action.payload.previousNote.id);
+        notesDbStore.add(action.payload.newNote);
+
+        alert("New note added to indexedDB");
+      } catch (error) {
+        alert("Error adding new note to indexedDB: " + error);
+      }
     },
 
     changeSelectedState: (
@@ -115,7 +127,29 @@ const NotesListSlice = createSlice({
 
     //DB
     removeSelected: (state: INotesListState) => {
+      try {
+        const tx = db.transaction("notes", "readwrite");
+        const notesDbStore = tx.objectStore("notes");
+
+        const idsToDelete = state.notes
+          .filter((note) => note.selectedState)
+          .map((note) => note.id);
+
+        alert("idsToDelete" + JSON.stringify(idsToDelete));
+
+        idsToDelete.forEach((item) => notesDbStore.delete(item));
+
+        alert("New note added to indexedDB");
+      } catch (error) {
+        alert("Error adding new note to indexedDB: " + error);
+      }
+
       state.notes = state.notes.filter((item) => !item.selectedState);
+
+      if (!db) {
+        alert("Error: indexedDB not available");
+        return;
+      }
 
       //sad
       state.filteredNotes = state.notes;
