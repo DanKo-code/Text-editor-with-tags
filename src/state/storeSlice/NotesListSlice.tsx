@@ -1,6 +1,40 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { INote } from "../../components/NotesList/NotesInfo";
 import { ITag } from "../../components/TagsList/TagsInfo";
+
+//DB//////////////////////////////////////////////////////////////////////
+const indexedDB = window.indexedDB;
+
+const request = indexedDB.open("NotesDB", 1);
+
+request.onerror = function (event) {
+  alert("An error occurred with IndexDB " + event);
+};
+
+request.onupgradeneeded = function () {
+  alert("onupgradeneeded");
+  const db = request.result;
+  db.createObjectStore("notes", { keyPath: "id" });
+};
+
+let db: IDBDatabase;
+let notesDbStore: IDBObjectStore;
+let getAllRequest: IDBRequest<INote[]>;
+let initialNotes: INote[];
+
+request.onsuccess = function () {
+  db = request.result;
+  // Assign the object store to the variable for later use
+  notesDbStore = db.transaction("notes", "readwrite").objectStore("notes");
+
+  getAllRequest = notesDbStore.getAll();
+
+  getAllRequest.onsuccess = function (event) {
+    initialNotes = getAllRequest.result;
+  };
+};
+
+//DB//////////////////////////////////////////////////////////////////////
 
 interface INotesListState {
   notes: INote[];
@@ -18,13 +52,36 @@ const NotesListSlice = createSlice({
   name: "NoteModalSlice",
   initialState,
   reducers: {
+    //DB OK!!!
     addNewNote: (state: INotesListState, action: PayloadAction<INote>) => {
-      state.notes.push(action.payload);
+      state.notes.unshift(action.payload);
 
       //sad
       state.filteredNotes = state.notes;
+
+      // Check if the indexedDB is available
+      if (!db) {
+        alert("Error: indexedDB not available");
+        return;
+      }
+
+      try {
+        // Create a new transaction for adding the new note
+        const tx = db.transaction("notes", "readwrite");
+        const notesDbStore = tx.objectStore("notes");
+
+        // Perform the transaction to add the new note
+        notesDbStore.add(action.payload);
+
+        // Note added successfully to indexedDB
+        alert("New note added to indexedDB");
+      } catch (error) {
+        // Error occurred while adding the note to indexedDB
+        alert("Error adding new note to indexedDB: " + error);
+      }
     },
 
+    //DB
     updateExistingNote: (
       state: INotesListState,
       action: PayloadAction<{ previousNote: INote; newNote: INote }>
@@ -66,6 +123,7 @@ const NotesListSlice = createSlice({
       state.filteredNotes = state.notes;
     },
 
+    //DB
     removeSelected: (state: INotesListState) => {
       state.notes = state.notes.filter((item) => !item.selectedState);
 

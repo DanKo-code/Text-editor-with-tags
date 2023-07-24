@@ -4,12 +4,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../state/store";
 import { changeSelectedNote } from "../../state/storeSlice/NoteModalSlice";
 import { INote } from "./NotesInfo";
+import { Dispatch } from "@reduxjs/toolkit";
 import {
   visibilityMode,
   fromNewFromExistingMode,
 } from "../../state/storeSlice/NoteModalSlice";
 import { clickOptions } from "@testing-library/user-event/dist/click";
-import React, { MouseEventHandler } from "react";
+import React, { MouseEventHandler, useEffect } from "react";
 
 const NotesList = () => {
   //const notes = useSelector((state: RootState) => state.NoteList.notes);

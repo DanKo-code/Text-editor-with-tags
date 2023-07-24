@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AppStyles from "./App.module.css";
 
 import ControlPanel from "./components/ControlPanel/ControlPanel";
