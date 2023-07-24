@@ -50,7 +50,6 @@ const NotesListSlice = createSlice({
       state.filteredNotes = state.notes;
 
       if (!db) {
-        alert("Error: indexedDB not available");
         return;
       }
 
@@ -59,8 +58,6 @@ const NotesListSlice = createSlice({
         const notesDbStore = tx.objectStore("notes");
 
         notesDbStore.add(action.payload);
-
-        alert("New note added to indexedDB");
       } catch (error) {
         alert("Error adding new note to indexedDB: " + error);
       }
@@ -91,8 +88,6 @@ const NotesListSlice = createSlice({
 
         notesDbStore.delete(action.payload.previousNote.id);
         notesDbStore.add(action.payload.newNote);
-
-        alert("New note added to indexedDB");
       } catch (error) {
         alert("Error adding new note to indexedDB: " + error);
       }
@@ -135,11 +130,7 @@ const NotesListSlice = createSlice({
           .filter((note) => note.selectedState)
           .map((note) => note.id);
 
-        alert("idsToDelete" + JSON.stringify(idsToDelete));
-
         idsToDelete.forEach((item) => notesDbStore.delete(item));
-
-        alert("New note added to indexedDB");
       } catch (error) {
         alert("Error adding new note to indexedDB: " + error);
       }
