@@ -6,3 +6,9 @@
   display: flex;
   flex-direction: row;
 }
+
+.noTags {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

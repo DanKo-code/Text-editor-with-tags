@@ -26,13 +26,17 @@ const TagsList = () => {
     <div>
       <div className={TagsListStyles.title}>Tags filter:</div>
       <div className={TagsListStyles.tagsListWrapper}>
-        {tags.map((item) => {
-          return (
-            <div onClick={() => handleTagClick(item)}>
-              <Tag key={item.id} tag={item} />
-            </div>
-          );
-        })}
+        {tags.length ? (
+          tags.map((item) => {
+            return (
+              <div onClick={() => handleTagClick(item)}>
+                <Tag key={item.id} tag={item} />
+              </div>
+            );
+          })
+        ) : (
+          <div className={TagsListStyles.noTags}>There are no tags yet!</div>
+        )}
       </div>
     </div>
   );

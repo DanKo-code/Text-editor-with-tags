@@ -27,13 +27,17 @@ const NotesList = () => {
 
   return (
     <div className={NotesListStyles.wrapper}>
-      {filterNotes.map((note) => {
-        return (
-          <div onClick={() => handleSelect(note)}>
-            <Note key={note.id} note={note} />
-          </div>
-        );
-      })}
+      {filterNotes.length ? (
+        filterNotes.map((note) => {
+          return (
+            <div onClick={() => handleSelect(note)}>
+              <Note key={note.id} note={note} />
+            </div>
+          );
+        })
+      ) : (
+        <div className={NotesListStyles.noNotes}>There are no notes yet!</div>
+      )}
     </div>
   );
 };
