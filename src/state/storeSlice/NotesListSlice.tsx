@@ -29,13 +29,13 @@ request.onsuccess = function () {
 interface INotesListState {
   notes: INote[];
   filteredNotes: INote[];
-  filterTitle: string;
+  filterTitles: string[];
 }
 
 const initialState: INotesListState = {
   notes: await getAllNotesFromIndexedDB(),
   filteredNotes: await getAllNotesFromIndexedDB(),
-  filterTitle: "",
+  filterTitles: [],
 };
 
 const NotesListSlice = createSlice({
@@ -147,16 +147,37 @@ const NotesListSlice = createSlice({
     },
 
     filterNotes: (state: INotesListState, action: PayloadAction<ITag>) => {
-      if (state.filterTitle === action.payload.title) {
-        state.filteredNotes = state.notes;
-        state.filterTitle = "";
-        return;
-      }
-      state.filterTitle = action.payload.title;
+      // if (state.filterTitles.includes(action.payload.title)) {
+      //   const resIndex = state.filteredNotes.findIndex(
+      //     (note) => note.title === action.payload.title
+      //   );
 
-      state.filteredNotes = state.notes.filter((note) =>
-        note.tags?.some((tag) => tag.title === action.payload.title)
+      //   state.filterTitles.splice(resIndex, 1);
+      // } else state.filterTitles.push(action.payload.title);
+
+      const indexToRemove = state.filterTitles.indexOf(action.payload.title);
+
+      if (indexToRemove !== -1) {
+        state.filterTitles.splice(indexToRemove, 1);
+      } else {
+        state.filterTitles.push(action.payload.title);
+      }
+
+      alert("NotesListSlice" + JSON.stringify(state.filterTitles));
+
+      // state.filteredNotes = state.notes.filter((note) =>
+      //   note.tags?.every((tag) => tag.title === )
+
+      const items: INote[] = state.notes;
+      const filterNames: string[] = state.filterTitles;
+
+      const filteredItems: INote[] = items.filter((item) =>
+        filterNames.every((name) =>
+          item?.tags?.some((nameObj) => nameObj.title === name)
+        )
       );
+
+      state.filteredNotes = filteredItems;
     },
   },
 });
