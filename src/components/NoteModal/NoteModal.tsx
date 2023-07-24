@@ -12,6 +12,7 @@ import {
 import {
   addNewNote,
   updateExistingNote,
+  changeSelectedState,
 } from "../../state/storeSlice/NotesListSlice";
 import { INote } from "../NotesList/NotesInfo";
 import { json } from "stream/consumers";
@@ -23,7 +24,7 @@ import {
 } from "../../state/storeSlice/TagsListSlice";
 
 const NoteModal = () => {
-  const selectedNote = useSelector(
+  let selectedNote = useSelector(
     (state: RootState) => state.NoteModal.selectedNote
   );
 
@@ -38,8 +39,20 @@ const NoteModal = () => {
     setTitle(selectedNote.title);
     setBody(selectedNote.body);
     setTags(selectedNote.tags);
-    setNotes(allNotes);
+    //
 
+    //dispatch(checkForRemove(allNotes));
+
+    // alert("allNotes: " + JSON.stringify(allNotes));
+    // ///alert("allNotes: " + JSON.stringify(allNotes[0].tags));
+    // allNotes.forEach((note) => {
+    //   alert("TagsList-action.payload.Note: " + JSON.stringify(note?.tags));
+    // });
+    //alert("selectedNote: " + JSON.stringify(selectedNote));
+  }, [selectedNote]);
+
+  useEffect(() => {
+    setNotes(allNotes);
     dispatch(checkForRemove(allNotes));
 
     // alert("allNotes: " + JSON.stringify(allNotes));
@@ -47,7 +60,7 @@ const NoteModal = () => {
     // allNotes.forEach((note) => {
     //   alert("TagsList-action.payload.Note: " + JSON.stringify(note?.tags));
     // });
-  }, [selectedNote, allNotes]);
+  }, [allNotes]);
 
   const [title, setTitle] = useState<string>(selectedNote?.title);
   const [body, setBody] = useState<string>(selectedNote?.body);
@@ -139,19 +152,24 @@ const NoteModal = () => {
     }
     //for update
     else if (fromNew === false && fromExisting === true) {
+      let updateSelectedNote: INote = {
+        id: Math.random(),
+        title: title,
+        body: body,
+        createTime: new Date().toLocaleString("en-US", options),
+        selectedState: selectedNote.selectedState,
+        tags: tags,
+      };
+
       await dispatch(
         updateExistingNote({
           previousNote: selectedNote,
-          newNote: {
-            id: Math.random(),
-            title: title,
-            body: body,
-            createTime: new Date().toLocaleString("en-US", options),
-            selectedState: selectedNote.selectedState,
-            tags: tags,
-          },
+          newNote: updateSelectedNote,
         })
       );
+
+      await dispatch(changeSelectedNote(updateSelectedNote));
+      //selectedNote = updateSelectedNote;
     }
   };
 
