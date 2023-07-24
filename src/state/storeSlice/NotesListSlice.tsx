@@ -1,20 +1,17 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { INote } from "../../components/NotesList/NotesInfo";
+import { ITag } from "../../components/TagsList/TagsInfo";
 
 interface INotesListState {
   notes: INote[];
+  filteredNotes: INote[];
+  filterTitle: string;
 }
 
 const initialState: INotesListState = {
-  notes: [
-    {
-      id: 1,
-      title: "Granny",
-      body: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sint architecto iure consectetur, at animi molestiae harum ab voluptates reiciendis consequatur sequi sed voluptas dicta maiores voluptate ex nobis necessitatibus possimus.",
-      createTime: "21.07.2023",
-      selectedState: false,
-    },
-  ],
+  notes: [],
+  filteredNotes: [],
+  filterTitle: "",
 };
 
 const NotesListSlice = createSlice({
@@ -23,6 +20,9 @@ const NotesListSlice = createSlice({
   reducers: {
     addNewNote: (state: INotesListState, action: PayloadAction<INote>) => {
       state.notes.push(action.payload);
+
+      //sad
+      state.filteredNotes = state.notes;
     },
 
     updateExistingNote: (
@@ -34,6 +34,9 @@ const NotesListSlice = createSlice({
           ? action.payload.newNote
           : note
       );
+
+      //sad
+      state.filteredNotes = state.notes;
     },
 
     changeSelectedState: (
@@ -49,16 +52,38 @@ const NotesListSlice = createSlice({
       } else {
         alert("NotesListSlice: Object not found");
       }
+
+      //sad
+      state.filteredNotes = state.notes;
     },
 
     deselectAll: (state: INotesListState) => {
       state.notes.forEach((note) => {
         note.selectedState = false;
       });
+
+      //sad
+      state.filteredNotes = state.notes;
     },
 
     removeSelected: (state: INotesListState) => {
       state.notes = state.notes.filter((item) => !item.selectedState);
+
+      //sad
+      state.filteredNotes = state.notes;
+    },
+
+    filterNotes: (state: INotesListState, action: PayloadAction<ITag>) => {
+      if (state.filterTitle === action.payload.title) {
+        state.filteredNotes = state.notes;
+        state.filterTitle = "";
+        return;
+      }
+      state.filterTitle = action.payload.title;
+
+      state.filteredNotes = state.notes.filter((note) =>
+        note.tags?.some((tag) => tag.title === action.payload.title)
+      );
     },
   },
 });
@@ -69,6 +94,7 @@ export const {
   deselectAll,
   removeSelected,
   updateExistingNote,
+  filterNotes,
 } = NotesListSlice.actions;
 
 export default NotesListSlice.reducer;

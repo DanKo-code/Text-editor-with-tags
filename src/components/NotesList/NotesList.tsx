@@ -12,7 +12,10 @@ import { clickOptions } from "@testing-library/user-event/dist/click";
 import React, { MouseEventHandler } from "react";
 
 const NotesList = () => {
-  const notes = useSelector((state: RootState) => state.NoteList.notes);
+  //const notes = useSelector((state: RootState) => state.NoteList.notes);
+  const filterNotes = useSelector(
+    (state: RootState) => state.NoteList.filteredNotes
+  );
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -24,7 +27,7 @@ const NotesList = () => {
 
   return (
     <div className={NotesListStyles.wrapper}>
-      {notes.map((note) => {
+      {filterNotes.map((note) => {
         return (
           <div onClick={() => handleSelect(note)}>
             <Note key={note.id} note={note} />
