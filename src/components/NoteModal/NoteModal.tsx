@@ -17,11 +17,17 @@ import { INote } from "../NotesList/NotesInfo";
 import { json } from "stream/consumers";
 import { match } from "assert";
 import { ITag } from "../TagsList/TagsInfo";
+import {
+  changeTags,
+  checkForRemove,
+} from "../../state/storeSlice/TagsListSlice";
 
 const NoteModal = () => {
   const selectedNote = useSelector(
     (state: RootState) => state.NoteModal.selectedNote
   );
+
+  const allNotes = useSelector((state: RootState) => state.NoteList.notes);
 
   const fromNew = useSelector((state: RootState) => state.NoteModal.fromNew);
   const fromExisting = useSelector(
@@ -32,11 +38,21 @@ const NoteModal = () => {
     setTitle(selectedNote.title);
     setBody(selectedNote.body);
     setTags(selectedNote.tags);
-  }, [selectedNote]);
+    setNotes(allNotes);
+
+    dispatch(checkForRemove(allNotes));
+
+    // alert("allNotes: " + JSON.stringify(allNotes));
+    // ///alert("allNotes: " + JSON.stringify(allNotes[0].tags));
+    // allNotes.forEach((note) => {
+    //   alert("TagsList-action.payload.Note: " + JSON.stringify(note?.tags));
+    // });
+  }, [selectedNote, allNotes]);
 
   const [title, setTitle] = useState<string>(selectedNote?.title);
   const [body, setBody] = useState<string>(selectedNote?.body);
   const [tags, setTags] = useState<ITag[] | undefined>(selectedNote?.tags);
+  const [notes, setNotes] = useState<INote[]>(allNotes);
 
   const findTags = (value: string): ITag[] | undefined => {
     const regex = /#[^ .,!?;:]+/g;
@@ -96,6 +112,10 @@ const NoteModal = () => {
     second: "2-digit",
   };
   const handleSave = async () => {
+    //Global tags handle
+    if (tags !== undefined) dispatch(changeTags(tags));
+
+    //MUST HANDLE TAGS HEARE!!!!
     //for Create
     if (fromNew === true && fromExisting === false) {
       const newNote: INote = {
@@ -115,11 +135,11 @@ const NoteModal = () => {
       // );
 
       //temp solution
-      handlevisibilityMode();
+      await handlevisibilityMode();
     }
     //for update
     else if (fromNew === false && fromExisting === true) {
-      dispatch(
+      await dispatch(
         updateExistingNote({
           previousNote: selectedNote,
           newNote: {
@@ -134,6 +154,23 @@ const NoteModal = () => {
       );
     }
   };
+
+  // const handleTagSelection = (tag: ITag) => {
+  //   const lowercaseBody = body.toLowerCase();
+  //   const regex = new RegExp(`${tag}`);
+
+  //   const highlightedString = lowercaseBody.replace(
+  //     regex,
+  //     (match) => `<mark>${match}</mark>`
+  //   );
+
+  //   setBody(highlightedString);
+  // };
+
+  // function surroundWordWithSymbols(text, word, symbol) {
+  //   const regex = new RegExp(`\\b(${word})\\b`, "gi");
+  //   return text.replace(regex, (match) => `${symbol}${match}${symbol}`);
+  // }
 
   return (
     <div className={NoteModalStyles.wrapper}>
@@ -168,7 +205,11 @@ const NoteModal = () => {
         <div className={NoteModalStyles.tagsListWrapper}>
           {tags?.map((item) => {
             return (
-              <div>
+              <div
+              // onClick={() => {
+              //   handleTagSelection(item);
+              // }}
+              >
                 <Tag key={item.id} tag={item} />
               </div>
             );
