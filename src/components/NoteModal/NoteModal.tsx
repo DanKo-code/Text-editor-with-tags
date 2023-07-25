@@ -176,7 +176,10 @@ const NoteModal = () => {
     if (prevTag?.title === tag.title) {
       // setBody((prevBody) => UnHighlightMatchingWords(tag.title, prevBody));
 
-      setPrevTag({ id: 0, title: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" });
+      setPrevTag({
+        id: 0,
+        title: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaq",
+      });
     } else {
       // setBody((prevBody) => UnHighlightMatchingWords(prevTag?.title, prevBody));
       setPrevTag(tag);
@@ -198,10 +201,12 @@ const NoteModal = () => {
           <input
             name="title"
             className={NoteModalStyles.noteTitle}
-            placeholder="Enter title"
+            placeholder="Enter some title..."
             value={title}
             onChange={handleState}
+            autoComplete="off"
           />
+
           {/* TODO Problems!!! */}
           <div onClick={handleSave} className={NoteModalStyles.save}></div>
           <div
@@ -216,13 +221,13 @@ const NoteModal = () => {
           value={body}
           onChange={handleState}
         /> */}
-        <HighlightWithinTextarea
-          //name="body"
-          //className={NoteModalStyles.noteBody}
-          highlight={prevTag.title}
-          value={body}
-          onChange={onBodyChange}
-        />
+        <div className={NoteModalStyles.noteBody}>
+          <HighlightWithinTextarea
+            highlight={prevTag.title}
+            value={body}
+            onChange={onBodyChange}
+          />
+        </div>
       </form>
 
       <div className={NoteModalStyles.tagsWrapper}>

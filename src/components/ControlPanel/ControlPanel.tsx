@@ -14,6 +14,9 @@ import {
 import { contolButtonsVisibilityMode } from "../../state/storeSlice/ControlPanelSlice";
 
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import CancelIcon from "@material-ui/icons/Cancel";
 
 const ControlPanel: React.FC = () => {
   const contolButtonsVisibility = useSelector(
@@ -56,11 +59,15 @@ const ControlPanel: React.FC = () => {
       >
         Create
       </div> */}
-      <Button variant="contained" onClick={handlevisibilityMode}>
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={handlevisibilityMode}
+      >
         Create
       </Button>
       <div className={controlsForSelectedItemsWrapperStyles}>
-        <Button
+        {/* <Button
           variant="contained"
           onClick={() => {
             dispatch(removeSelected());
@@ -68,9 +75,24 @@ const ControlPanel: React.FC = () => {
           }}
         >
           Remove selected
-        </Button>
+        </Button> */}
+
         <Button
           variant="contained"
+          color="primary"
+          startIcon={<DeleteIcon />}
+          onClick={() => {
+            dispatch(removeSelected());
+            dispatch(contolButtonsVisibilityMode(false));
+          }}
+        >
+          Remove selected
+        </Button>
+
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<CancelIcon />}
           onClick={() => {
             dispatch(deselectAll());
             dispatch(contolButtonsVisibilityMode(false));

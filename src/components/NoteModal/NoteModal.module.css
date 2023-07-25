@@ -34,18 +34,23 @@
 }
 
 .noteBody {
+  background-color: white;
   margin-top: 20px;
-  min-width: 100%;
-  max-width: 100%;
-  border: none;
   border-radius: 8px;
-  min-height: 60px;
   max-height: 200px;
+  overflow: hidden;
+  padding: 5px;
 }
 
 .tagsListWrapper {
   display: flex;
   flex-direction: row;
+}
+
+input::placeholder {
+  font-size: 14px; /* Set the font size */
+  color: black; /* Set the font color */
+  font-weight: normal; /* Set the font weight */
 }
 
 .tagsWrapper {
@@ -54,4 +59,8 @@
 
 .tagsWrapper > :first-child {
   margin-bottom: 10px;
+}
+
+input:focus {
+  outline: none;
 }
