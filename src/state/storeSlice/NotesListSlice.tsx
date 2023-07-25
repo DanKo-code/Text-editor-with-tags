@@ -13,7 +13,6 @@ request.onerror = function (event) {
 };
 
 request.onupgradeneeded = function () {
-  alert("onupgradeneeded");
   const db = request.result;
   db.createObjectStore("notes", { keyPath: "id" });
 };
@@ -154,8 +153,6 @@ const NotesListSlice = createSlice({
       } else {
         state.filterTitles.push(action.payload.title);
       }
-
-      alert("NotesListSlice" + JSON.stringify(state.filterTitles));
 
       const items: INote[] = state.notes;
       const filterNames: string[] = state.filterTitles;

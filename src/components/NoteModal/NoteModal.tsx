@@ -174,31 +174,27 @@ const NoteModal = () => {
 
   const handleTagClick = (tag: ITag) => {
     if (prevTag?.title === tag.title) {
-      setBody((prevBody) => UnHighlightMatchingWords(tag.title, prevBody));
+      // setBody((prevBody) => UnHighlightMatchingWords(tag.title, prevBody));
 
       setPrevTag({ id: 0, title: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" });
     } else {
-      setBody((prevBody) => UnHighlightMatchingWords(prevTag?.title, prevBody));
+      // setBody((prevBody) => UnHighlightMatchingWords(prevTag?.title, prevBody));
       setPrevTag(tag);
 
-      setBody((prevBody) => highlightMatchingWords(tag.title, prevBody));
+      // setBody((prevBody) => highlightMatchingWords(tag.title, prevBody));
     }
   };
 
-  const [value, setValue] = useState("Potato potato tomato potato.");
+  const onBodyChange = (value: string) => {
+    setBody(value);
+    const res = findTags(value);
+    setTags(res);
+  };
+
   return (
     <div className={NoteModalStyles.wrapper}>
       <form>
         <div className={NoteModalStyles.headerPanel}>
-          {/* <TextField
-            name="title"
-            className={NoteModalStyles.noteTitle}
-            placeholder="Enter title"
-            value={title}
-            onChange={handleState}
-            onFocus={handleFocus}
-          /> */}
-
           <input
             name="title"
             className={NoteModalStyles.noteTitle}
@@ -213,25 +209,20 @@ const NoteModal = () => {
             className={NoteModalStyles.close}
           ></div>
         </div>
-        <textarea
+        {/* <textarea
           name="body"
           className={NoteModalStyles.noteBody}
           placeholder="Enter body"
           value={body}
           onChange={handleState}
-        />
+        /> */}
         <HighlightWithinTextarea
-          highlight={"potato"}
-          value={value}
-          onChange={(value) => setValue(value)}
+          //name="body"
+          //className={NoteModalStyles.noteBody}
+          highlight={prevTag.title}
+          value={body}
+          onChange={onBodyChange}
         />
-        {/* <div>
-          <HighlightWithinTextarea
-            value={body}
-            highlight="nikita"
-            //onChange={handleState}
-          />
-        </div> */}
       </form>
 
       <div className={NoteModalStyles.tagsWrapper}>
