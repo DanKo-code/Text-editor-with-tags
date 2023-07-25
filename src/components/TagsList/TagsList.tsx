@@ -33,7 +33,9 @@ const TagsList = () => {
     );
 
     //3
-    const updatedSecondArray = [...TagsWithStates];
+    const updatedSecondArray = TagsWithStates.filter((item) =>
+      globalTags.some((tag) => tag.title === item.title)
+    );
 
     //4
     newTagsToAdd.forEach((newTag) => {
