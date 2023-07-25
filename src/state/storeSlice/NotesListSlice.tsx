@@ -147,14 +147,6 @@ const NotesListSlice = createSlice({
     },
 
     filterNotes: (state: INotesListState, action: PayloadAction<ITag>) => {
-      // if (state.filterTitles.includes(action.payload.title)) {
-      //   const resIndex = state.filteredNotes.findIndex(
-      //     (note) => note.title === action.payload.title
-      //   );
-
-      //   state.filterTitles.splice(resIndex, 1);
-      // } else state.filterTitles.push(action.payload.title);
-
       const indexToRemove = state.filterTitles.indexOf(action.payload.title);
 
       if (indexToRemove !== -1) {
@@ -164,9 +156,6 @@ const NotesListSlice = createSlice({
       }
 
       alert("NotesListSlice" + JSON.stringify(state.filterTitles));
-
-      // state.filteredNotes = state.notes.filter((note) =>
-      //   note.tags?.every((tag) => tag.title === )
 
       const items: INote[] = state.notes;
       const filterNames: string[] = state.filterTitles;

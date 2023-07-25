@@ -23,6 +23,10 @@ import {
   checkForRemove,
 } from "../../state/storeSlice/TagsListSlice";
 
+import TextField from "@material-ui/core/TextField";
+
+import { HighlightWithinTextarea } from "react-highlight-within-textarea";
+
 const NoteModal = () => {
   let selectedNote = useSelector(
     (state: RootState) => state.NoteModal.selectedNote
@@ -39,33 +43,21 @@ const NoteModal = () => {
     setTitle(selectedNote.title);
     setBody(selectedNote.body);
     setTags(selectedNote.tags);
-    //
-
-    //dispatch(checkForRemove(allNotes));
-
-    // alert("allNotes: " + JSON.stringify(allNotes));
-    // ///alert("allNotes: " + JSON.stringify(allNotes[0].tags));
-    // allNotes.forEach((note) => {
-    //   alert("TagsList-action.payload.Note: " + JSON.stringify(note?.tags));
-    // });
-    //alert("selectedNote: " + JSON.stringify(selectedNote));
   }, [selectedNote]);
 
   useEffect(() => {
     setNotes(allNotes);
     dispatch(checkForRemove(allNotes));
-
-    // alert("allNotes: " + JSON.stringify(allNotes));
-    // ///alert("allNotes: " + JSON.stringify(allNotes[0].tags));
-    // allNotes.forEach((note) => {
-    //   alert("TagsList-action.payload.Note: " + JSON.stringify(note?.tags));
-    // });
   }, [allNotes]);
 
   const [title, setTitle] = useState<string>(selectedNote?.title);
   const [body, setBody] = useState<string>(selectedNote?.body);
   const [tags, setTags] = useState<ITag[] | undefined>(selectedNote?.tags);
   const [notes, setNotes] = useState<INote[]>(allNotes);
+  const [prevTag, setPrevTag] = useState<ITag>({
+    id: 0,
+    title: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  });
 
   const findTags = (value: string): ITag[] | undefined => {
     const regex = /#[^ .,!?;:]+/g;
@@ -142,12 +134,6 @@ const NoteModal = () => {
 
       await dispatch(addNewNote(newNote));
 
-      //TODO in the feature mabe add ability to update after create
-      // await dispatch(
-      //   fromNewFromExistingMode({ fromNew: false, fromExisting: true })
-      // );
-
-      //temp solution
       await handlevisibilityMode();
     }
     //for update
@@ -173,27 +159,44 @@ const NoteModal = () => {
     }
   };
 
-  // const handleTagSelection = (tag: ITag) => {
-  //   const lowercaseBody = body.toLowerCase();
-  //   const regex = new RegExp(`${tag}`);
+  //
 
-  //   const highlightedString = lowercaseBody.replace(
-  //     regex,
-  //     (match) => `<mark>${match}</mark>`
-  //   );
+  function highlightMatchingWords(inputWord: string, text: string): string {
+    const pattern = new RegExp(`\\b${inputWord}\\b`, "gi");
+    return text.replace(pattern, (match) => `$${match}$`);
+  }
 
-  //   setBody(highlightedString);
-  // };
+  function UnHighlightMatchingWords(inputWord: string, text: string): string {
+    const pattern = new RegExp(`\\$(${inputWord})\\$`, "gi");
+    return text.replace(pattern, `${inputWord}`);
+  }
 
-  // function surroundWordWithSymbols(text, word, symbol) {
-  //   const regex = new RegExp(`\\b(${word})\\b`, "gi");
-  //   return text.replace(regex, (match) => `${symbol}${match}${symbol}`);
-  // }
+  const handleTagClick = (tag: ITag) => {
+    if (prevTag?.title === tag.title) {
+      setBody((prevBody) => UnHighlightMatchingWords(tag.title, prevBody));
+
+      setPrevTag({ id: 0, title: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" });
+    } else {
+      setBody((prevBody) => UnHighlightMatchingWords(prevTag?.title, prevBody));
+      setPrevTag(tag);
+
+      setBody((prevBody) => highlightMatchingWords(tag.title, prevBody));
+    }
+  };
 
   return (
     <div className={NoteModalStyles.wrapper}>
       <form>
         <div className={NoteModalStyles.headerPanel}>
+          {/* <TextField
+            name="title"
+            className={NoteModalStyles.noteTitle}
+            placeholder="Enter title"
+            value={title}
+            onChange={handleState}
+            onFocus={handleFocus}
+          /> */}
+
           <input
             name="title"
             className={NoteModalStyles.noteTitle}
@@ -208,7 +211,6 @@ const NoteModal = () => {
             className={NoteModalStyles.close}
           ></div>
         </div>
-
         <textarea
           name="body"
           className={NoteModalStyles.noteBody}
@@ -216,6 +218,13 @@ const NoteModal = () => {
           value={body}
           onChange={handleState}
         />
+        {/* <div>
+          <HighlightWithinTextarea
+            value={body}
+            highlight="nikita"
+            //onChange={handleState}
+          />
+        </div> */}
       </form>
 
       <div className={NoteModalStyles.tagsWrapper}>
@@ -224,9 +233,10 @@ const NoteModal = () => {
           {tags?.map((item) => {
             return (
               <div
-              // onClick={() => {
-              //   handleTagSelection(item);
-              // }}
+                onClick={() => handleTagClick(item)}
+                // onClick={() => {
+                //   handleTagSelection(item);
+                // }}
               >
                 <Tag key={item.id} tag={item} />
               </div>
