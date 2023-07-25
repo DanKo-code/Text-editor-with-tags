@@ -26,6 +26,7 @@ import {
 // import TextField from "@material-ui/core/TextField";
 
 // import { HighlightWithinTextarea } from "react-highlight-within-textarea";
+import { HighlightWithinTextarea } from "react-highlight-within-textarea";
 
 const NoteModal = () => {
   let selectedNote = useSelector(
@@ -184,6 +185,7 @@ const NoteModal = () => {
     }
   };
 
+  const [value, setValue] = useState("Potato potato tomato potato.");
   return (
     <div className={NoteModalStyles.wrapper}>
       <form>
@@ -217,6 +219,11 @@ const NoteModal = () => {
           placeholder="Enter body"
           value={body}
           onChange={handleState}
+        />
+        <HighlightWithinTextarea
+          highlight={"potato"}
+          value={value}
+          onChange={(value) => setValue(value)}
         />
         {/* <div>
           <HighlightWithinTextarea

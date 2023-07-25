@@ -42,48 +42,44 @@ const ControlPanel: React.FC = () => {
     : ControlPanelStyles.controlsForSelectedItemsHide;
 
   return (
-    <Button
-      variant="contained"
-      color="primary"
-      //onClick={handlevisibilityMode}
-    >
-      Create
-    </Button>
-    // <div className={ControlPanelStyles.wrapper}>
-    //   <div
-    //     onClick={handlevisibilityMode}
-    //     className={ControlPanelStyles.control}
-    //   >
-    //     Create
-    //   </div>
-    //   {/* <Button
-    //     variant="contained"
-    //     color="primary"
-    //     //onClick={handlevisibilityMode}
-    //   >
-    //     Create
-    //   </Button> */}
-    //   <div className={controlsForSelectedItemsWrapperStyles}>
-    //     <div
-    //       onClick={() => {
-    //         dispatch(removeSelected());
-    //         dispatch(contolButtonsVisibilityMode(false));
-    //       }}
-    //       className={ControlPanelStyles.control}
-    //     >
-    //       Remove selected
-    //     </div>
-    //     <div
-    //       onClick={() => {
-    //         dispatch(deselectAll());
-    //         dispatch(contolButtonsVisibilityMode(false));
-    //       }}
-    //       className={ControlPanelStyles.control}
-    //     >
-    //       Deselect All
-    //     </div>
-    //   </div>
-    // </div>
+    // <Button
+    //   variant="contained"
+    //   color="primary"
+    //   //onClick={handlevisibilityMode}
+    // >
+    //   Create
+    // </Button>
+    <div className={ControlPanelStyles.wrapper}>
+      {/* <div
+        onClick={handlevisibilityMode}
+        className={ControlPanelStyles.control}
+      >
+        Create
+      </div> */}
+      <Button variant="contained" onClick={handlevisibilityMode}>
+        Create
+      </Button>
+      <div className={controlsForSelectedItemsWrapperStyles}>
+        <Button
+          variant="contained"
+          onClick={() => {
+            dispatch(removeSelected());
+            dispatch(contolButtonsVisibilityMode(false));
+          }}
+        >
+          Remove selected
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => {
+            dispatch(deselectAll());
+            dispatch(contolButtonsVisibilityMode(false));
+          }}
+        >
+          Deselect All
+        </Button>
+      </div>
+    </div>
   );
 };
 
