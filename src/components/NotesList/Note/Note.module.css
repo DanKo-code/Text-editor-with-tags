@@ -6,6 +6,15 @@
   background-color: #d9d9d9;
   border-radius: 20px;
   padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.note:hover {
+  background-color: #b3b3b3; /* Change the color on hover */
+}
+
+.note:active {
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.8); /* Add neon border on press */
 }
 
 .note > :first-child > :first-child {
@@ -17,6 +26,15 @@
   height: 30px;
   background-color: white;
   border-radius: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toggle:hover {
+  background-color: #dfdfdf; /* Change the color on hover */
+}
+
+.note:active {
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.8); /* Add neon border on press */
 }
 
 .toggle {

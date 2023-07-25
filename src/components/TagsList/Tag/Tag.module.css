@@ -3,4 +3,10 @@
   border-radius: 20px;
   padding: 5px;
   margin-right: 10px;
+  user-select: none;
+  transition: box-shadow 1s;
+}
+
+.Tag:hover {
+  background-color: rgb(180, 180, 180); /* Change the color on hover */
 }

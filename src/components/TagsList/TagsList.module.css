@@ -12,3 +12,9 @@
   justify-content: center;
   align-items: center;
 }
+
+.active {
+  background-color: black;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(29, 34, 34, 0.8);
+}

@@ -27,6 +27,9 @@ import {
 
 // import { HighlightWithinTextarea } from "react-highlight-within-textarea";
 import { HighlightWithinTextarea } from "react-highlight-within-textarea";
+import CloseIcon from "@material-ui/icons/Close";
+import SaveIcon from "@material-ui/icons/Save";
+import IconButton from "@material-ui/core/IconButton";
 
 const NoteModal = () => {
   let selectedNote = useSelector(
@@ -207,13 +210,26 @@ const NoteModal = () => {
             autoComplete="off"
           />
 
-          {/* TODO Problems!!! */}
-          <div onClick={handleSave} className={NoteModalStyles.save}></div>
-          <div
+          {/* <div onClick={handleSave} className={NoteModalStyles.save}></div> */}
+          <div>
+            <IconButton onClick={handleSave} className={NoteModalStyles.save}>
+              <SaveIcon />
+            </IconButton>
+          </div>
+          {/* <div
             onClick={handlevisibilityMode}
             className={NoteModalStyles.close}
-          ></div>
+          ></div> */}
+          <div>
+            <IconButton
+              onClick={handlevisibilityMode}
+              className={NoteModalStyles.close}
+            >
+              <CloseIcon />
+            </IconButton>
+          </div>
         </div>
+
         {/* <textarea
           name="body"
           className={NoteModalStyles.noteBody}
