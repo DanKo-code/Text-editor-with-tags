@@ -13,6 +13,8 @@ import {
 //delete then, for use bool visibility for control buttons
 import { contolButtonsVisibilityMode } from "../../state/storeSlice/ControlPanelSlice";
 
+import Button from "@material-ui/core/Button";
+
 const ControlPanel: React.FC = () => {
   const contolButtonsVisibility = useSelector(
     (state: RootState) => state.ControlPanel.contolButtonsVisibility
@@ -40,34 +42,48 @@ const ControlPanel: React.FC = () => {
     : ControlPanelStyles.controlsForSelectedItemsHide;
 
   return (
-    <div className={ControlPanelStyles.wrapper}>
-      <div
-        onClick={handlevisibilityMode}
-        className={ControlPanelStyles.control}
-      >
-        Create
-      </div>
-      <div className={controlsForSelectedItemsWrapperStyles}>
-        <div
-          onClick={() => {
-            dispatch(removeSelected());
-            dispatch(contolButtonsVisibilityMode(false));
-          }}
-          className={ControlPanelStyles.control}
-        >
-          Remove selected
-        </div>
-        <div
-          onClick={() => {
-            dispatch(deselectAll());
-            dispatch(contolButtonsVisibilityMode(false));
-          }}
-          className={ControlPanelStyles.control}
-        >
-          Deselect All
-        </div>
-      </div>
-    </div>
+    <Button
+      variant="contained"
+      color="primary"
+      //onClick={handlevisibilityMode}
+    >
+      Create
+    </Button>
+    // <div className={ControlPanelStyles.wrapper}>
+    //   <div
+    //     onClick={handlevisibilityMode}
+    //     className={ControlPanelStyles.control}
+    //   >
+    //     Create
+    //   </div>
+    //   {/* <Button
+    //     variant="contained"
+    //     color="primary"
+    //     //onClick={handlevisibilityMode}
+    //   >
+    //     Create
+    //   </Button> */}
+    //   <div className={controlsForSelectedItemsWrapperStyles}>
+    //     <div
+    //       onClick={() => {
+    //         dispatch(removeSelected());
+    //         dispatch(contolButtonsVisibilityMode(false));
+    //       }}
+    //       className={ControlPanelStyles.control}
+    //     >
+    //       Remove selected
+    //     </div>
+    //     <div
+    //       onClick={() => {
+    //         dispatch(deselectAll());
+    //         dispatch(contolButtonsVisibilityMode(false));
+    //       }}
+    //       className={ControlPanelStyles.control}
+    //     >
+    //       Deselect All
+    //     </div>
+    //   </div>
+    // </div>
   );
 };
 

@@ -23,9 +23,9 @@ import {
   checkForRemove,
 } from "../../state/storeSlice/TagsListSlice";
 
-import TextField from "@material-ui/core/TextField";
+// import TextField from "@material-ui/core/TextField";
 
-import { HighlightWithinTextarea } from "react-highlight-within-textarea";
+// import { HighlightWithinTextarea } from "react-highlight-within-textarea";
 
 const NoteModal = () => {
   let selectedNote = useSelector(

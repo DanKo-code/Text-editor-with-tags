@@ -9,7 +9,6 @@ import {
   visibilityMode,
   fromNewFromExistingMode,
 } from "../../state/storeSlice/NoteModalSlice";
-import { clickOptions } from "@testing-library/user-event/dist/click";
 import React, { MouseEventHandler, useEffect } from "react";
 
 const NotesList = () => {
